@@ -64,7 +64,12 @@ stages:
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
         replaceExistingArchive: true
     
-
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'destroy'
+        environmentServiceNameAzureRM: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
+        
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Build'
       inputs:
