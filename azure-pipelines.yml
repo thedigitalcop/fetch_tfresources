@@ -21,9 +21,9 @@ stages:
         command: 'init'
         backendAzureRmUseEntraIdForAuthentication: false
         backendServiceArm: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
-        backendAzureRmResourceGroupName: 'newterrarg'
-        backendAzureRmStorageAccountName: 'newterrastorage'
-        backendAzureRmContainerName: 'tf-fetchresource'
+        backendAzureRmResourceGroupName: 'terrabackup'
+        backendAzureRmStorageAccountName: 'backupterra'
+        backendAzureRmContainerName: 'tf-state'
         backendAzureRmKey: 'terraform.tfstate'
     
     - task: TerraformTask@5
