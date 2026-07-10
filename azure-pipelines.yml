@@ -23,7 +23,7 @@ stages:
         backendAzureRmResourceGroupName: 'newterrarg'
         backendAzureRmStorageAccountName: 'newterrastorage'
         backendAzureRmContainerName: 'tf-fetchresource'
-        backendAzureRmKey: 'terraform.tfstate'
+#        backendAzureRmKey: 'terraform.tfstate'
     
     - task: TerraformTask@5
       displayName: 'Terraform Format'
