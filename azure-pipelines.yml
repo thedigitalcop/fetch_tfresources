@@ -1,3 +1,4 @@
+
 trigger:
 - main
 
@@ -20,13 +21,13 @@ stages:
         command: 'init'
         backendAzureRmUseEntraIdForAuthentication: false
         backendServiceArm: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
-        backendAzureRmResourceGroupName: 'terrabackup'
-        backendAzureRmStorageAccountName: 'backupterra'
+        backendAzureRmResourceGroupName: 'newterrarg'
+        backendAzureRmStorageAccountName: 'newterrastorage'
         backendAzureRmContainerName: 'tf-fetchresource'
         backendAzureRmKey: 'terraform.tfstate'
     
     - task: TerraformTask@5
-      displayName: 'Terraform Format'
+      displayName: 'Terraform Validate'
       inputs:
         provider: 'azurerm'
         command: 'validate'
@@ -47,14 +48,8 @@ stages:
         command: 'plan'
         environmentServiceNameAzureRM: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
     
-    
-    - task: TerraformTask@5
-      displayName: 'Terraform Apply'
-      inputs:
-        provider: 'azurerm'
-        command: 'apply'
-        environmentServiceNameAzureRM: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
-    
+
+
     - task: ArchiveFiles@2
       displayName: 'Archive File'
       inputs:
@@ -65,10 +60,12 @@ stages:
         replaceExistingArchive: true
     
 
+        
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Build'
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
+        ArtifactName: 'terraform-files'
         publishLocation: 'Container'
+
 
