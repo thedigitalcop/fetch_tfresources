@@ -14,9 +14,3 @@ resource "azurerm_storage_account" "example" {
     environment = "staging"
   }
 }
-
-resource "azurerm_storage_container" "container" {
-  name                  = "${var.prefix}-container"
-  storage_account_id    = azurerm_storage_account.example.id
-  container_access_type = "private"
-}
