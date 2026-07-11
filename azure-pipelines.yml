@@ -72,14 +72,15 @@ stages:
           }
           else {
               $resources | Select-Object Name, ResourceType, Location | Format-Table -AutoSize
+
+              $resources | Select-Object Name, ResourceType, Location |
+                  Export-Csv -Path "$(Build.ArtifactStagingDirectory)/resources.csv" -NoTypeInformation
+
+              Write-Host "Resource details exported to resources.csv"
           }
 
-          $resources | Select-Object Name, ResourceType, Location |
-              Export-Csv -Path "$(Build.ArtifactStagingDirectory)/resources.csv" -NoTypeInformation
-
-          Write-Host "Resource details exported to resources.csv"
-
-          azurePowerShellVersion: 'LatestVersion'
+        azurePowerShellVersion: 'LatestVersion'
+        pwsh: true
 
     - task: ArchiveFiles@2
       displayName: 'Archive File'
@@ -96,7 +97,7 @@ stages:
       displayName: 'Publish Build'
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'terraform-files'
+        ArtifactName: 'resource-report'
         publishLocation: 'Container'
 
 
