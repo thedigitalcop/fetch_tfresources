@@ -2,6 +2,10 @@
 trigger:
 - main
 
+#variables:
+#  - group: variables(name of library file)
+
+
 stages:
 - stage: Build
   jobs:
@@ -21,9 +25,9 @@ stages:
         command: 'init'
         backendAzureRmUseEntraIdForAuthentication: false
         backendServiceArm: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
-        backendAzureRmResourceGroupName: 'newterrarg'
-        backendAzureRmStorageAccountName: 'newterrastorage'
-        backendAzureRmContainerName: 'tf-fetchresource'
+        backendAzureRmResourceGroupName: 'terrabackup'
+        backendAzureRmStorageAccountName: 'backupterra'
+        backendAzureRmContainerName: 'tf-state'
         backendAzureRmKey: 'terraform.tfstate'
     
     - task: TerraformTask@5
@@ -48,12 +52,18 @@ stages:
         command: 'plan'
         environmentServiceNameAzureRM: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
     
-
-
+    - task: TerraformTask@5
+      displayName: 'Terraform apply'
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        environmentServiceNameAzureRM: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
+    
+   
     - task: ArchiveFiles@2
       displayName: 'Archive File'
       inputs:
-        rootFolderOrFile: '$(Build.BinariesDirectory)'
+        rootFolderOrFile: '$(Build.SourcesDirectory)'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
@@ -65,7 +75,7 @@ stages:
       displayName: 'Publish Build'
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'terraform-files'
+        ArtifactName: 'resource-report'
         publishLocation: 'Container'
 
 #testting 
