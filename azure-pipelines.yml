@@ -49,6 +49,7 @@ stages:
         environmentServiceNameAzureRM: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
     
     - task: TerraformTask@5
+      displayName: 'Terraform apply'
       inputs:
         provider: 'azurerm'
         command: 'apply'
