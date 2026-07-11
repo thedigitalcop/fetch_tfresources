@@ -2,6 +2,10 @@
 trigger:
 - main
 
+#variables:
+#  - group: variables(name of library file)
+
+
 stages:
 - stage: Build
   jobs:
