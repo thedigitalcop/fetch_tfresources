@@ -53,6 +53,40 @@ stages:
         provider: 'azurerm'
         command: 'apply'
         environmentServiceNameAzureRM: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
+    
+
+    - task: AzurePowerShell@5
+      displayName: 'Script_Resources'
+      inputs:
+        azureSubscription: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
+        ScriptType: 'InlineScript'
+        Inline: |
+          param(
+                        [string]$SubscriptionId,
+                        [string]$ResourceGroupName
+                    )
+                    
+                    Write-Host "Setting Azure subscription..."
+                              
+                    Write-Host "Fetching resource groups: $ResourceGroupName"
+                    
+                    $resources = Get-AzResource -ResourceGroupName $ResourceGroupName
+                    
+                    if ($resources.Count -eq 0) {
+                        Write-Host "No resources found in the resource group."
+                    }
+                    else {
+                        $resources | Select-Object Name, ResourceType, Location |
+                            Format-Table -AutoSize
+                    }
+                    
+                    # Export resource list if required
+                    $resources | Select-Object Name, ResourceType, Location |
+                        Export-Csv -Path "./resources.csv" -NoTypeInformation
+                    
+                    Write-Host "Resource details exported to resources.csv"
+                  azurePowerShellVersion: 'LatestVersion'
+        azurePowerShellVersion: 'LatestVersion'
 
     - task: ArchiveFiles@2
       displayName: 'Archive File'
