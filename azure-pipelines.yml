@@ -60,10 +60,11 @@ stages:
         environmentServiceNameAzureRM: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
     
     - task: AzurePowerShell@5
+      displayName: 'Powersherr-script'
       inputs:
+        azureSubscription: 'Azure subscription 1(defaf26e-a23b-4a38-b4d4-dc9c52fb4b6d)'
         ScriptType: 'FilePath'
         ScriptPath: 'script.ps1'
-        azurePowerShellVersion: 'LatestVersion'
 
     - task: ArchiveFiles@2
       displayName: 'Archive File'
